@@ -21,9 +21,38 @@ public class Player{
         this.points = 0;
     }
     // Constructor that also takes in a hand
-    public Player(String name, ArrayList<Card> hand){
+    public Player(String name, ArrayList<Card> given_hand){
+        this.name = name;
+        for (int i = 0; i < given_hand.size(); i++){
+            this.hand.add(i, given_hand.get(i));
 
+        }
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public ArrayList<Card> getHand() {
+        return hand;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+    public void addPoints(int new_points){
+        this.points += new_points;
+    }
+    public void addCard(Card new_card){
+        hand.add(new_card);
+    }
+
+    @Override
+    public String toString() {
+        return this.name +
+                " has " +
+                this.points + " points "
+                + "\n" + this.name + "'s cards: " +
+                this.hand;
+    }
 }
