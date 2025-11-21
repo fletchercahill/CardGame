@@ -28,7 +28,6 @@ public class Player{
 
         }
     }
-
     public String getName() {
         return name;
     }
@@ -43,9 +42,13 @@ public class Player{
     public void addPoints(int new_points){
         this.points += new_points;
     }
+    public void subtractPoints(int new_points){
+        this.points+=new_points;
+    }
     public void addCard(Card new_card){
         hand.add(new_card);
     }
+
 
     @Override
     public String toString() {
@@ -55,4 +58,5 @@ public class Player{
                 + "\n" + this.name + "'s cards: " +
                 this.hand;
     }
+
 }
