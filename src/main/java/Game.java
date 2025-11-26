@@ -1,25 +1,33 @@
 public class Game {
-
+    private Deck deck;
+    private Player p1;
+    private Player cpu;
     // Instance variables
     public Game(){
         final String[] ranks = {"2", "3", "4", "5", "6", "7", "8",
                           "9", "10", "J", "Q", "K", "A"};
         final String[] suits = {"Hearts", "Clubs", "Spades", "Diamonds"};
-        final int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-        Deck deck = new Deck(ranks, suits, values);
-        Player p1 = new Player("Challenger");
-        Player cpu = new Player("CPU");
+        final int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+        deck = new Deck(ranks, suits, values);
+        p1 = new Player("Challenger");
+        cpu = new Player("CPU");
         deck.shuffle();
         System.out.println(deck.deal());
     }
+    public void dealHands(){
+        for (int i = 0; i < 2; i++){
+            p1.addCard(deck.deal());
+            cpu.addCard(deck.deal());
+        }
+    }
     public void playGame(){
         printInstructions();
-        while(true){
-            System.out.println("Your hand: ");
-            break;
-        }
+        dealHands();
+        System.out.println("Your hand: " + p1.getHand());
+        System.out.println("CPU hand: " + cpu.getHand());
 
     }
+
     public static void printInstructions(){
         System.out.println("WELCOME TO POKER!");
         System.out.println("Here's how it's gonna work: ");

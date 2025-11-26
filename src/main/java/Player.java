@@ -19,6 +19,7 @@ public class Player{
     public Player (String name){
         this.name = name;
         this.points = 0;
+        this.hand = new ArrayList<>();
     }
     // Constructor that also takes in a hand
     public Player(String name, ArrayList<Card> given_hand){
