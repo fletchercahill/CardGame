@@ -24,10 +24,7 @@ public class Player{
     // Constructor that also takes in a hand
     public Player(String name, ArrayList<Card> given_hand){
         this.name = name;
-        for (int i = 0; i < given_hand.size(); i++){
-            this.hand.add(i, given_hand.get(i));
-
-        }
+        this.hand.addAll(given_hand);
     }
     public String getName() {
         return name;

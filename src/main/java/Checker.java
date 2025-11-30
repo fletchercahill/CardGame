@@ -34,11 +34,23 @@ public class Checker {
         if (hasPair(total)){
             return 2;
         }
-        // public static int highCard - work on this last
+        // High Card
+        // Right now haven't implemented logic to determine which high card is better
+        return 1;
+
 
 
     }
-
+    // This only takes the users hand not including the table cards
+    private static int highCard(ArrayList<Card> cards){
+        int highest = 0;
+        for (Card card: cards){
+            if (card.getValue()>highest){
+                highest = card.getValue();
+            }
+        }
+        return highest;
+    }
     private static boolean hasPair(ArrayList<Card> cards) {
         int[] count = new int[15];
         for (Card card: cards){
@@ -87,12 +99,21 @@ public class Checker {
         // Finish this up
         boolean[] count = new boolean[15];
         for (Card card: cards){
-
+            count[card.getValue()] = true;
         }
-
+        // No rank less than 2
+        for (int i = 2; i < 11; i++){
+            if (count[i]){
+                if (count[i+1] && count[i+2] && count[i+3] && count[i+4]){
+                    return true;
+                }
+            }
+        }
+        // Ace low straight
         if (count[2] && count[3] && count[4] && count[5] && count[14]){
             return true;
         }
+        return false;
     }
 
     private static boolean hasFlush(ArrayList<Card> cards) {
@@ -151,33 +172,26 @@ public class Checker {
     private static boolean hasStraightFlush(ArrayList<Card> cards) {
         // Very similar to royal flush, however different in straight logiic
         // First check for flush
-        int diamonds = 0, hearts = 0, spades = 0, clubs = 0;
+        ArrayList<Card> hearts = new ArrayList<>();
+        ArrayList<Card> diamonds = new ArrayList<>();
+        ArrayList<Card> spades = new ArrayList<>();
+        ArrayList<Card> clubs = new ArrayList<>();
+
         for (Card card : cards){
             String current_suit = card.getSuit();
             switch (current_suit) {
-                case "Hearts" -> hearts++;
-                case "Diamonds" -> diamonds++;
-                case "Spades" -> spades++;
-                default -> clubs++;
+                case "Hearts" -> hearts.add(card);
+                case "Diamonds" -> diamonds.add(card);
+                case "Spades" -> spades.add(card);
+                case "Clubs" -> clubs.add(card);
             }
         }
 
-        String target = "Diamonds";
-        int maxSuits = diamonds;
-        if (hearts > maxSuits){
-            target = "Hearts";
-            maxSuits = hearts;
-        }
-        if (spades > maxSuits){
-            target = "Spades";
-            maxSuits = spades;
-        }
-        if (clubs > maxSuits){
-            target = "Clubs";
-            maxSuits = clubs;
-        }
-        // If not a flush rule it out
-
+        if (hearts.size() >= 5 && hasStraight(hearts)) return true;
+        if (diamonds.size() >= 5 && hasStraight(diamonds)) return true;
+        if (clubs.size() >= 5 && hasStraight(clubs)) return true;
+        if (spades.size() >= 5 && hasStraight(spades)) return true;
+        return false;
     }
     // Can definitely make more efficient 
     private static boolean hasRoyalFlush(ArrayList<Card> cards) {

@@ -37,12 +37,12 @@ public class Deck {
         Exchange cards[i] and cards[r]
          */;
         cardsLeft = 52;
-        for (int i = cardsLeft-1; i >= 0; i--){
+        for (int i = cardsLeft-1; i > 0; i--){
             // Review this to make sure it's correct
-            int randomNumber = (int)Math.round(Math.random() * (cardsLeft-1));
-            Card temp = cards.get(randomNumber);
-            cards.set(randomNumber, cards.get(i));
-            cards.set(i, temp);
+            int randomNumber = (int)(Math.random() * (i + 1));
+            Card temp = cards.get(i);
+            cards.set(i, cards.get(randomNumber));
+            cards.set(randomNumber, temp);
         }
     }
 }

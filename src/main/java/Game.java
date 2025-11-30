@@ -1,7 +1,13 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Game {
     private Deck deck;
     private Player p1;
     private Player cpu;
+    private int money;
+    private Scanner scan;
+    private ArrayList<Card> table;
     // Instance variables
     public Game(){
         final String[] ranks = {"2", "3", "4", "5", "6", "7", "8",
@@ -11,8 +17,10 @@ public class Game {
         deck = new Deck(ranks, suits, values);
         p1 = new Player("Challenger");
         cpu = new Player("CPU");
+        table = new ArrayList<>();
+        money = 100;
+        scan = new Scanner(System.in);
         deck.shuffle();
-        System.out.println(deck.deal());
     }
     public void dealHands(){
         for (int i = 0; i < 2; i++){
@@ -20,13 +28,66 @@ public class Game {
             cpu.addCard(deck.deal());
         }
     }
+
+
     public void playGame(){
         printInstructions();
-        dealHands();
-        System.out.println("Your hand: " + p1.getHand());
-        System.out.println("CPU hand: " + cpu.getHand());
+        while (money > 0){
+            System.out.println("You have $" + money);
+            int bet = promptBet();
+            resetTable();
+            deck.shuffle();
+            dealHands();
+            dealTable();;
+            System.out.println(table);
+            System.out.println("Your hand: " + p1.getHand());
+            System.out.println("CPU hand: **");
+            System.out.println("Table: " + table);
+            int playerPoints = Checker.check(p1.getHand(), table);
+            int cpuPoints = Checker.check(cpu.getHand(), table);
+            System.out.println("Cpu hand: " + cpu.getHand());
+            System.out.println("Your score: " + playerPoints);
+            System.out.println("Cpu score: " + cpuPoints);
+            if (playerPoints > cpuPoints){
+                System.out.println("You win the hand!");
+                money+=bet;
+            }
+            else if (cpuPoints > playerPoints){
+                System.out.println("Cpu wins the hand!");
+                money-=bet;
+            }
+            else{
+                System.out.println("You tied!");
+            }
+            if (money <= 0){
+                System.out.println("You are out of money, goodbye!");
+                return;
+            }
+            System.out.println("Play again? (y/n)");
+            String choice = scan.nextLine();
+            if (!choice.equals("y")){
+                System.out.println("Thanks for playing!");
+                break;
+            }
+
+
+        }
 
     }
+    private void resetTable(){
+        p1.getHand().clear();
+        cpu.getHand().clear();
+        table.clear();
+    }
+    private void dealTable(){
+        table.clear();
+        // For now only betting at first, no betting in between flop,
+        // turn, river
+        for (int i = 0; i < 5; i++){
+            table.add(deck.deal());
+        }
+    }
+
 
     public static void printInstructions(){
         System.out.println("WELCOME TO POKER!");
@@ -35,6 +96,15 @@ public class Game {
                 " you'd like before the flop");
         System.out.println("If you win you get that money from the CPU");
 
+    }
+    private int promptBet(){
+        int bet = -1;
+        while (bet < 1 || bet > money){
+            System.out.println("Enter your bet: ");
+            bet = scan.nextInt();
+            scan.nextLine();
+        }
+        return bet;
     }
 
     public static void main(String[] args) {
