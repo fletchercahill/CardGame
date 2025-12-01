@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// Some things to work
+// Make more visually appealing, implement high card logic
 public class Game {
-    private Deck deck;
+    private final Deck deck;
     private Player p1;
     private Player cpu;
     private int money;
@@ -38,14 +40,19 @@ public class Game {
             resetTable();
             deck.shuffle();
             dealHands();
-            dealTable();;
-            System.out.println(table);
-            System.out.println("Your hand: " + p1.getHand());
-            System.out.println("CPU hand: **");
-            System.out.println("Table: " + table);
+            dealTable();
+            // I want to make this more visually appealing
+            System.out.print("Your hand: " + p1.getHand().getFirst().getRank() + " " + p1.getHand().getFirst().getSuit());
+            System.out.println(" " + p1.getHand().getLast().getRank() + " " + p1.getHand().getLast().getSuit());
+            System.out.print("Table: " + table.getFirst().getRank() + " " + table.getFirst().getSuit());
+            System.out.print(" " + table.get(1).getRank() + " " + table.get(1).getSuit());
+            System.out.print(" " + table.get(2).getRank() + " " + table.get(2).getSuit());
+            System.out.print(" " + table.get(3).getRank() + " " + table.get(3).getSuit());
+            System.out.println(" " + table.get(4).getRank() + " " + table.get(4).getSuit());
             int playerPoints = Checker.check(p1.getHand(), table);
             int cpuPoints = Checker.check(cpu.getHand(), table);
-            System.out.println("Cpu hand: " + cpu.getHand());
+            System.out.print("Cpu hand: " + cpu.getHand().getFirst().getRank() + " " + cpu.getHand().getFirst().getSuit());
+            System.out.println(" " + cpu.getHand().getLast().getRank() + " " + cpu.getHand().getLast().getSuit());
             System.out.println("Your score: " + playerPoints);
             System.out.println("Cpu score: " + cpuPoints);
             if (playerPoints > cpuPoints){

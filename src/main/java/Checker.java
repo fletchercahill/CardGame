@@ -36,6 +36,7 @@ public class Checker {
         }
         // High Card
         // Right now haven't implemented logic to determine which high card is better
+        // Maybe if it returns 1 call a function which finds high card for each hand and determines which is higher
         return 1;
 
 
