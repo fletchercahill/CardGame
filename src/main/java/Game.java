@@ -51,6 +51,14 @@ public class Game {
             System.out.println(" " + table.get(4).getRank() + " " + table.get(4).getSuit());
             int playerPoints = Checker.check(p1.getHand(), table);
             int cpuPoints = Checker.check(cpu.getHand(), table);
+            // Both have only high card, call high card function
+            if (playerPoints == 1 && cpuPoints == 1){
+                boolean winner = compareHighCards();
+                // Player wins
+                if (winner) cpuPoints = 0;
+                // Cpu wins
+                else playerPoints = 0;
+            }
             System.out.print("Cpu hand: " + cpu.getHand().getFirst().getRank() + " " + cpu.getHand().getFirst().getSuit());
             System.out.println(" " + cpu.getHand().getLast().getRank() + " " + cpu.getHand().getLast().getSuit());
             System.out.println("Your score: " + playerPoints);
@@ -94,7 +102,13 @@ public class Game {
             table.add(deck.deal());
         }
     }
-
+    private boolean compareHighCards(){
+        int maxPlayer = p1.getHand().getFirst().getValue();
+        int maxCpu = p1.getHand().getFirst().getValue();
+        if (p1.getHand().getLast().getValue() > maxPlayer) maxPlayer = p1.getHand().getLast().getValue();
+        if (cpu.getHand().getLast().getValue() > maxPlayer) maxCpu = cpu.getHand().getLast().getValue();
+        return maxPlayer > maxCpu;
+    }
 
     public static void printInstructions(){
         System.out.println("WELCOME TO POKER!");
