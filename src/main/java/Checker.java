@@ -4,9 +4,12 @@ public class Checker {
     // Takes in both the hand that is being checked,
     // and the table hand
     public static int check(ArrayList<Card> hand, ArrayList<Card> table){
+        // Because in Texas Holdem your hand and the communal hand are shared to form hands
         ArrayList<Card> total = new ArrayList<Card>();
         total.addAll(hand);
         total.addAll(table);
+
+        // Checks from most valuable to least valuable hand
         if (hasRoyalFlush(total)){
             return 10;
         }
@@ -34,24 +37,14 @@ public class Checker {
         if (hasPair(total)){
             return 2;
         }
-        // High Card
-        // Right now haven't implemented logic to determine which high card is better
-        // Maybe if it returns 1 call a function which finds high card for each hand and determines which is higher
+        // If High Card returns 1
+        // If both player and cpu only have high card, there's a function in game to compare
         return 1;
 
 
 
     }
     // This only takes the users hand not including the table cards
-    private static int highCard(ArrayList<Card> cards){
-        int highest = 0;
-        for (Card card: cards){
-            if (card.getValue()>highest){
-                highest = card.getValue();
-            }
-        }
-        return highest;
-    }
     private static boolean hasPair(ArrayList<Card> cards) {
         int[] count = new int[15];
         for (Card card: cards){
@@ -65,13 +58,15 @@ public class Checker {
         }
         return false;
     }
-
+    // Checks for two pairs
     private static boolean hasTwoPair(ArrayList<Card> cards) {
         int[] count = new int[15];
+        // Adds the occurences of a value to an array
         for (Card card: cards){
             count[card.getValue()]++;
 
         }
+        // Checks the array for number of pairs
         int num_pairs = 0;
         for (int i = 2; i <= 14; i++){
             if (count[i] == 2){
@@ -82,11 +77,12 @@ public class Checker {
     }
 
     private static boolean hasThreeOfAKind(ArrayList<Card> cards) {
+        // Adds occurences to array
         int[] count = new int[15];
         for (Card card: cards){
             count[card.getValue()]++;
-
         }
+        // Checks to see if any value has three occurences
         for (int i = 2; i <= 14; i++){
             if (count[i] == 3){
                 return true;
@@ -118,6 +114,7 @@ public class Checker {
     }
 
     private static boolean hasFlush(ArrayList<Card> cards) {
+        // Checks occurences of each suit, if occurences for any greater than 4 then flush
         int diamonds = 0, hearts = 0, spades = 0, clubs = 0;
         for (Card card : cards){
             String current_suit = card.getSuit();
@@ -141,12 +138,14 @@ public class Checker {
         }
         boolean hasThree = false;
         boolean hasPair = false;
+        // Checks for three of a kind
         for (int i = 2; i <= 14; i++){
             if (count[i] == 3){
                 hasThree = true;
                 break;
             }
         }
+        // Checks for pair
         for (int i = 2; i<=14; i++){
             if (count[i] == 2){
                 hasPair = true;
@@ -162,6 +161,7 @@ public class Checker {
         for (Card card : cards){
             count[card.getValue()]++;
         }
+        // Same logic as pair and three of a kind checker functions
         for (int c : count){
             if (c >= 4){
                 return true;
@@ -177,7 +177,7 @@ public class Checker {
         ArrayList<Card> diamonds = new ArrayList<>();
         ArrayList<Card> spades = new ArrayList<>();
         ArrayList<Card> clubs = new ArrayList<>();
-
+        // Adding each card to a list of only the same suit
         for (Card card : cards){
             String current_suit = card.getSuit();
             switch (current_suit) {
@@ -187,7 +187,7 @@ public class Checker {
                 case "Clubs" -> clubs.add(card);
             }
         }
-
+        // Must have a straight between the cards of same suit as well
         if (hearts.size() >= 5 && hasStraight(hearts)) return true;
         if (diamonds.size() >= 5 && hasStraight(diamonds)) return true;
         if (clubs.size() >= 5 && hasStraight(clubs)) return true;
@@ -240,6 +240,7 @@ public class Checker {
                 else if (card.getValue() == 14) hasAce = true;
             }
         }
+        // If a high straight of all same suit then royal flush
         return hasTen && hasJack && hasQueen && hasKing && hasAce;
 
     }

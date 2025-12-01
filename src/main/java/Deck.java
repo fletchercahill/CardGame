@@ -15,6 +15,7 @@ public class Deck {
         }
         cardsLeft = cards.size();
     }
+    // Functions required by problem set, however not utilized
     public boolean isEmpty(){
         return cardsLeft == 0;
     }
@@ -31,14 +32,10 @@ public class Deck {
         return cards.get(cardsLeft);
     }
     public void shuffle(){
-        /*For i = last index of the deck down to 0
-        Generate a random integer r (using Math.random) between 0
-        and i, inclusive;
-        Exchange cards[i] and cards[r]
-         */;
+        // Generates a random integer r (using Math.random) between 0 and i, inclusive;
+        // Exchanges cards[i] and cards[r]
         cardsLeft = 52;
         for (int i = cardsLeft-1; i > 0; i--){
-            // Review this to make sure it's correct
             int randomNumber = (int)(Math.random() * (i + 1));
             Card temp = cards.get(i);
             cards.set(i, cards.get(randomNumber));
