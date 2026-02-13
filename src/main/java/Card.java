@@ -1,12 +1,21 @@
+import javax.swing.*;
+import java.awt.*;
+
 public class Card {
     private String rank;
     private String suit;
     private int value;
+    private Image im;
+
     // Card constructor
-    public Card(String rank, String suit, int value) {
+    public Card(String rank, String suit, int value, int order) {
         this.rank = rank;
         this.suit = suit;
         this.value = value;
+        // Not printing out my aces for some rzn
+        String imageString = "src/main/resources/Cards/" + Integer.toString(order + 4) + ".png";
+        // - 1 to adjust it
+        this.im = new ImageIcon(imageString).getImage();
     }
     // Getters for card attributes
     public String getRank() {
@@ -17,20 +26,17 @@ public class Card {
         return suit;
     }
 
+    public Image getIm() {
+        return im;
+    }
+    public void draw(Graphics g, int x, int y, GameView view){
+        // How will card know where to draw itself, should specify size, but
+        // must probably take in argument of location
+        System.out.println("hello");
+        g.drawImage(im, x, y, 100, 100, view);
+    }
     public int getValue() {
         return value;
-    }
-    // Setters for card attributes
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
-
-    public void setSuit(String suit) {
-        this.suit = suit;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
     // Formatted to string for each card
     @Override

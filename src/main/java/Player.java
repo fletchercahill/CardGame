@@ -10,34 +10,15 @@ public class Player{
         this.points = 0;
         this.hand = new ArrayList<>();
     }
-    // Constructor that also takes in a hand
-    public Player(String name, ArrayList<Card> given_hand){
-        this.name = name;
-        this.hand.addAll(given_hand);
-    }
-    public String getName() {
-        return name;
-    }
 
     public ArrayList<Card> getHand() {
         return hand;
     }
     // Methods to get, add, and subtract points
     // Method to add a card to hand
-    public int getPoints() {
-        return points;
+    public void addCard(Card newCard){
+        hand.add(newCard);
     }
-    public void addPoints(int new_points){
-        this.points += new_points;
-    }
-    public void subtractPoints(int new_points){
-        this.points+=new_points;
-    }
-    public void addCard(Card new_card){
-        hand.add(new_card);
-    }
-
-
     @Override
     public String toString() {
         return this.name +

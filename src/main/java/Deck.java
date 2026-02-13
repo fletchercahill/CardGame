@@ -3,25 +3,23 @@ import java.util.ArrayList;
 public class Deck {
     private ArrayList<Card> cards;
     private int cardsLeft;
+
     public Deck (String[] ranks, String[] suits, int[] values) {
         // Every rank suit pair is unique card
         cards = new ArrayList<>();
+        // Here is where the error is
+        int count = 1;
         for (int i = 0; i < ranks.length; i++) {
             for (String suit : suits) {
-                Card new_card = new Card(ranks[i], suit, values[i]);
-                // Do I want to add a card at a random location?
+                Card new_card = new Card(ranks[i], suit, values[i], count);
                 cards.add(new_card);
+                count+=1;
             }
         }
         cardsLeft = cards.size();
     }
     // Functions required by problem set, however not utilized
-    public boolean isEmpty(){
-        return cardsLeft == 0;
-    }
-    public int getCardsLeft(){
-        return cardsLeft;
-    }
+
     public Card deal(){
         if (cardsLeft == 0){
             return null;

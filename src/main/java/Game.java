@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// Poker by Fletcher Cahill 
 // Some things to work
 // Make more visually appealing, implement high card logic
 // Now want to add some more features - bet
-
+// Spades, hearts, diamonds, clover
 public class Game {
     private final Deck deck;
     private Player p1;
@@ -13,12 +14,12 @@ public class Game {
     private int cpuMoney;
     private Scanner scan;
     private ArrayList<Card> table;
-
+    private GameView window;
     // Instance variables
     public Game(){
         final String[] ranks = {"2", "3", "4", "5", "6", "7", "8",
                           "9", "10", "J", "Q", "K", "A"};
-        final String[] suits = {"Hearts", "Clubs", "Spades", "Diamonds"};
+        final String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
         final int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
         deck = new Deck(ranks, suits, values);
         p1 = new Player("Challenger");
@@ -28,6 +29,7 @@ public class Game {
         cpuMoney = 300;
         scan = new Scanner(System.in);
         deck.shuffle();
+        this.window = new GameView(this);
     }
     public void dealHands(){
         // Deals two cards to the player and the cpu
@@ -48,6 +50,8 @@ public class Game {
             deck.shuffle();
             dealHands();
             dealTable();
+            window.repaint();
+
             // I want to make this more visually appealing
             System.out.print("Your hand: " + p1.getHand().getFirst().getRank() + " " + p1.getHand().getFirst().getSuit());
             System.out.println(" " + p1.getHand().getLast().getRank() + " " + p1.getHand().getLast().getSuit());
@@ -104,6 +108,21 @@ public class Game {
 
         }
 
+    }
+    public Player getPlayer(){
+        return p1;
+    }
+    public Player getCpu(){
+        return cpu;
+    }
+    public ArrayList<Card> getTable(){
+        return table;
+    }
+    public int getMoney(){
+        return this.money;
+    }
+    public int getCpuMoney(){
+        return this.cpuMoney;
     }
     // Clears the hands and table
     private void resetTable(){
