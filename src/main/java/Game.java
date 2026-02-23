@@ -13,6 +13,7 @@ public class Game {
     private int money;
     private int cpuMoney;
     private Scanner scan;
+    private int winner;
     private ArrayList<Card> table;
     private GameView window;
     // Instance variables
@@ -43,6 +44,7 @@ public class Game {
     public void playGame(){
         printInstructions();
         while (money > 0){
+            winner = 0;
             System.out.println("You have $" + money);
             System.out.println("House has $" + cpuMoney);
             int bet = promptBet();
@@ -77,17 +79,20 @@ public class Game {
             System.out.println("Cpu score: " + cpuPoints);
             // If player has better hand than Cpu they win
             if (playerPoints > cpuPoints){
+                winner+=1;
                 System.out.println("You win the hand!");
                 money+=bet;
                 cpuMoney-=bet;
             }
             // If cpu has better hand than player then they win
             else if (cpuPoints > playerPoints){
+                winner+=2;
                 System.out.println("Cpu wins the hand!");
                 money-=bet;
                 cpuMoney+=bet;
             }
             else{
+                winner+=3;
                 System.out.println("You tied!");
             }
             if (money <= 0){
@@ -108,6 +113,9 @@ public class Game {
 
         }
 
+    }
+    public int getWinner(){
+        return winner;
     }
     public Player getPlayer(){
         return p1;
@@ -141,10 +149,10 @@ public class Game {
     }
     private boolean compareHighCards(){
         int maxPlayer = p1.getHand().getFirst().getValue();
-        int maxCpu = p1.getHand().getFirst().getValue();
+        int maxCpu = cpu.getHand().getFirst().getValue();
         // Only two cards in hand, so if second greater than first then it's the max
         if (p1.getHand().getLast().getValue() > maxPlayer) maxPlayer = p1.getHand().getLast().getValue();
-        if (cpu.getHand().getLast().getValue() > maxPlayer) maxCpu = cpu.getHand().getLast().getValue();
+        if (cpu.getHand().getLast().getValue() > maxCpu) maxCpu = cpu.getHand().getLast().getValue();
         return maxPlayer > maxCpu;
     }
 

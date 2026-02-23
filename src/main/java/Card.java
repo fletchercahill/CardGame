@@ -5,6 +5,7 @@ public class Card {
     private String rank;
     private String suit;
     private int value;
+    private int order;
     private Image im;
 
     // Card constructor
@@ -12,6 +13,7 @@ public class Card {
         this.rank = rank;
         this.suit = suit;
         this.value = value;
+        this.order = order;
         // Not printing out my aces for some rzn
         String imageString = "src/main/resources/Cards/" + Integer.toString(order + 4) + ".png";
         // - 1 to adjust it
@@ -32,7 +34,6 @@ public class Card {
     public void draw(Graphics g, int x, int y, GameView view){
         // How will card know where to draw itself, should specify size, but
         // must probably take in argument of location
-        System.out.println("hello");
         g.drawImage(im, x, y, 100, 100, view);
     }
     public int getValue() {
@@ -44,7 +45,8 @@ public class Card {
         return "Card{" +
                 "rank='" + rank + '\'' +
                 ", suit='" + suit + '\'' +
-                ", value=" + value +
+                ", value=" + value + "\'" +
+                ", order=" + order + "\'" +
                 '}';
     }
 }
