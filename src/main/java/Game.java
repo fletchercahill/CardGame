@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 // Poker by Fletcher Cahill 
@@ -169,7 +170,12 @@ public class Game {
         int bet = -1;
         while (bet < 1 || bet > money){
             System.out.println("Enter your bet: ");
-            bet = scan.nextInt();
+            try{
+                bet = scan.nextInt();
+            }
+            catch(InputMismatchException e){
+                System.out.println("Please enter an integer.");
+            }
             scan.nextLine();
         }
         return bet;

@@ -5,18 +5,23 @@ public class GameView extends JFrame{
     private final int WINDOW_WIDTH = 1000;
     private final int WINDOW_HEIGHT = 800;
     private final int TITLE_BAR_HEIGHT = 23;
-    private Image bgImage;
-    private Image chips;
+    private final Image bgImage;
+    private final Image chips;
+    private final Image cardBack;
     private Game backend;
     public GameView(Game backend){
         this.backend = backend;
+        // Initializing the images
+        cardBack = new ImageIcon("src/main/resources/cardback.png").getImage();
         bgImage = new ImageIcon("src/main/resources/board.png").getImage();
         chips = new ImageIcon("src/main/resources/chips3.png").getImage();
+        // Creating and setting window operations
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Poker Reimagined");
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         this.setVisible(true);
     }
+    // Draws the user's card at bottom of screen
     private void drawPlayerCards(Graphics g){
         int initialX = 370;
         int y = 515;
@@ -26,8 +31,8 @@ public class GameView extends JFrame{
             c.draw(g, x, y, this);
             x+=spacing;
         }
-
     }
+    // Prints the winner or tie of each hand in the top left of screen
     private void handleWin(Graphics g){
         if (backend.getWinner() == 2){
             g.setFont(new Font("Georgia", Font.BOLD, 60));
@@ -42,6 +47,7 @@ public class GameView extends JFrame{
             g.drawString("Tie", 30, 150);
         }
     }
+    // Draws the CPU's cards at the top of the screen
     private void drawCpuCards(Graphics g){
         int initialX = 370;
         int y = 200;
@@ -52,6 +58,7 @@ public class GameView extends JFrame{
             x+=spacing;
         }
     }
+    // Draws the table cards in the middle of the screen
     private void drawTableCards(Graphics g){
         int initialX = 200;
         int y = 360;
@@ -62,18 +69,22 @@ public class GameView extends JFrame{
             x+=spacing;
         }
     }
+    // Handles drawing the window at end game
     private void endGame(Graphics g){
         g.setColor(Color.cyan);
         g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         g.setColor(Color.ORANGE);
         g.setFont(new Font("Georgia", Font.BOLD, 100));
+        // Draws this screen if player is out of money
         if (backend.getCpuMoney() > 0){
             g.drawString("Thanks for Playing", 30, 200);
         }
+        // Draws this screen if CPU is out of money
         else{
             g.drawString("YOU WIN!", 80, 200);
         }
     }
+    // Prints out the instructions on the screen in bottom left
     private void drawInstructions(Graphics g){
         g.setFont(new Font("Georgia", Font.BOLD, 30));
         g.drawString("INSTRUCTIONS", 25, 655);
@@ -84,25 +95,32 @@ public class GameView extends JFrame{
         g.drawString("Place a bet to get started!", 25, 760);
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
     }
+    // Function that paints onto screen
     public void paint (Graphics g){
         super.paint(g);
+        // Draws the background and deck and chips images
         g.drawImage(bgImage, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, this);
         g.drawImage(chips, 600, 660, 100, 100, this);
+        g.drawImage(cardBack, 30, 360, 100, 100, this);
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
         g.setColor(Color.RED);
+        // Draws ovals displaying user scores
         g.fillOval(350, 660, 220, 100);
         g.drawImage(chips, 600, 50, 100, 100, this);
         g.fillOval(350, 50, 220, 100);
         g.setColor(Color.BLACK);
         drawInstructions(g);
-        g.drawString(Integer.toString(backend.getMoney()), 410 , 720);
-        g.drawString(Integer.toString(backend.getCpuMoney()), 410 , 115);
+        // Draws money for cpu and user
+        g.drawString("$" + backend.getMoney(), 390,720);
+        g.drawString("$" + backend.getCpuMoney(), 390, 115);
         g.drawString("CPU", 750, 125);
         g.drawString("User", 750, 720);
+        // Draws the cards after user bets
         drawPlayerCards(g);
         drawCpuCards(g);
         drawTableCards(g);
         handleWin(g);
+        // Checks if needs to handle end game
         if (backend.getCpuMoney() <= 0 || backend.getMoney() <= 0){
             endGame(g);
         }
