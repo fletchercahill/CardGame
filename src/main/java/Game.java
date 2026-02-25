@@ -2,13 +2,13 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-// Poker by Fletcher Cahill 
+// Poker Reimagined by Fletcher Cahill, Completed 2/25/26
 // Some things to work
 // Make more visually appealing, implement high card logic
 // Now want to add some more features - bet
 // Spades, hearts, diamonds, clover
 public class Game {
-    private final Deck deck;
+    private Deck deck;
     private Player p1;
     private Player cpu;
     private int money;

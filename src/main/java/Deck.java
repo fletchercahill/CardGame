@@ -32,7 +32,7 @@ public class Deck {
     public void shuffle(){
         // Generates a random integer r (using Math.random) between 0 and i, inclusive;
         // Exchanges cards[i] and cards[r]
-        cardsLeft = 52;
+        cardsLeft = cards.size();
         for (int i = cardsLeft-1; i > 0; i--){
             int randomNumber = (int)(Math.random() * (i + 1));
             Card temp = cards.get(i);

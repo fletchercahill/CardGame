@@ -67,13 +67,13 @@ public class Checker {
 
         }
         // Checks the array for number of pairs
-        int num_pairs = 0;
+        int numPairs = 0;
         for (int i = 2; i <= 14; i++){
             if (count[i] == 2){
-                num_pairs++;
+                numPairs++;
             }
         }
-        return num_pairs >= 2;
+        return numPairs >= 2;
     }
 
     private static boolean hasThreeOfAKind(ArrayList<Card> cards) {
