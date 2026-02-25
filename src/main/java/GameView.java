@@ -5,6 +5,10 @@ public class GameView extends JFrame{
     private final int WINDOW_WIDTH = 1000;
     private final int WINDOW_HEIGHT = 800;
     private final int TITLE_BAR_HEIGHT = 23;
+    private static final int CARDSPACING = 120;
+    private static final int CARDSIZE = 100;
+    private static final int OVALWIDTH = 220;
+    private static final int OVALHEIGHT = 100;
     private final Image bgImage;
     private final Image chips;
     private final Image cardBack;
@@ -25,11 +29,10 @@ public class GameView extends JFrame{
     private void drawPlayerCards(Graphics g){
         int initialX = 370;
         int y = 515;
-        int spacing = 120;
         int x = initialX;
         for (Card c: backend.getPlayer().getHand()){
             c.draw(g, x, y, this);
-            x+=spacing;
+            x+=CARDSPACING;
         }
     }
     // Prints the winner or tie of each hand in the top left of screen
@@ -51,22 +54,20 @@ public class GameView extends JFrame{
     private void drawCpuCards(Graphics g){
         int initialX = 370;
         int y = 200;
-        int spacing = 120;
         int x = initialX;
         for (Card c: backend.getCpu().getHand()){
             c.draw(g, x, y, this);
-            x+=spacing;
+            x+=CARDSPACING;
         }
     }
     // Draws the table cards in the middle of the screen
     private void drawTableCards(Graphics g){
         int initialX = 200;
         int y = 360;
-        int spacing = 120;
         int x = initialX;
         for (Card c: backend.getTable()){
             c.draw(g, x, y, this);
-            x+=spacing;
+            x+=CARDSPACING;
         }
     }
     // Handles drawing the window at end game
@@ -86,6 +87,7 @@ public class GameView extends JFrame{
     }
     // Prints out the instructions on the screen in bottom left
     private void drawInstructions(Graphics g){
+        g.setColor(Color.CYAN);
         g.setFont(new Font("Georgia", Font.BOLD, 30));
         g.drawString("INSTRUCTIONS", 25, 655);
         g.setFont(new Font("Georgia", Font.BOLD, 18));
@@ -100,14 +102,14 @@ public class GameView extends JFrame{
         super.paint(g);
         // Draws the background and deck and chips images
         g.drawImage(bgImage, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, this);
-        g.drawImage(chips, 600, 660, 100, 100, this);
-        g.drawImage(cardBack, 30, 360, 100, 100, this);
+        g.drawImage(chips, 600, 660, CARDSIZE, CARDSIZE, this);
+        g.drawImage(cardBack, 30, 360, CARDSIZE, CARDSIZE, this);
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
         g.setColor(Color.RED);
         // Draws ovals displaying user scores
-        g.fillOval(350, 660, 220, 100);
+        g.fillOval(350, 660, OVALWIDTH, OVALHEIGHT);
         g.drawImage(chips, 600, 50, 100, 100, this);
-        g.fillOval(350, 50, 220, 100);
+        g.fillOval(350, 50, OVALWIDTH, OVALHEIGHT);
         g.setColor(Color.BLACK);
         drawInstructions(g);
         // Draws money for cpu and user

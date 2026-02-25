@@ -3,10 +3,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 // Poker Reimagined by Fletcher Cahill, Completed 2/25/26
-// Some things to work
-// Make more visually appealing, implement high card logic
-// Now want to add some more features - bet
-// Spades, hearts, diamonds, clover
 public class Game {
     private Deck deck;
     private Player p1;
@@ -48,14 +44,14 @@ public class Game {
             winner = 0;
             System.out.println("You have $" + money);
             System.out.println("House has $" + cpuMoney);
+            // First deals with game logic then repaints the window
             int bet = promptBet();
             resetTable();
             deck.shuffle();
             dealHands();
             dealTable();
             window.repaint();
-
-            // I want to make this more visually appealing
+            // Prints out game results to the console
             System.out.print("Your hand: " + p1.getHand().getFirst().getRank() + " " + p1.getHand().getFirst().getSuit());
             System.out.println(" " + p1.getHand().getLast().getRank() + " " + p1.getHand().getLast().getSuit());
             System.out.print("Table: " + table.getFirst().getRank() + " " + table.getFirst().getSuit());
@@ -156,7 +152,7 @@ public class Game {
         if (cpu.getHand().getLast().getValue() > maxCpu) maxCpu = cpu.getHand().getLast().getValue();
         return maxPlayer > maxCpu;
     }
-
+    // Prints out these instructions to the console
     public static void printInstructions(){
         System.out.println("WELCOME TO POKER!");
         System.out.println("Here's how it's gonna work: ");
