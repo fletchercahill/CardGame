@@ -13,6 +13,12 @@ public class Game {
     private int winner;
     private ArrayList<Card> table;
     private GameView window;
+
+    // Constants
+    public static final int  PLAYER_WON = 1;
+    public static final int COMPUTER_WON = 2;
+    public static final int TIE = 3;
+
     // Instance variables
     public Game(){
         final String[] ranks = {"2", "3", "4", "5", "6", "7", "8",
@@ -75,21 +81,24 @@ public class Game {
             System.out.println("Your score: " + playerPoints);
             System.out.println("Cpu score: " + cpuPoints);
             // If player has better hand than Cpu they win
+
+            window.drawWhoWon(winner, window.getGraphics());
+
             if (playerPoints > cpuPoints){
-                winner+=1;
+                winner = PLAYER_WON;
                 System.out.println("You win the hand!");
                 money+=bet;
                 cpuMoney-=bet;
             }
             // If cpu has better hand than player then they win
             else if (cpuPoints > playerPoints){
-                winner+=2;
+                winner = COMPUTER_WON;
                 System.out.println("Cpu wins the hand!");
                 money-=bet;
                 cpuMoney+=bet;
             }
             else{
-                winner+=3;
+                winner = TIE;
                 System.out.println("You tied!");
             }
             if (money <= 0){

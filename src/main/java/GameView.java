@@ -13,6 +13,12 @@ public class GameView extends JFrame{
     private final Image chips;
     private final Image cardBack;
     private Game backend;
+    // Constants
+    private static final int USER_OVAL = 350;
+    private static final int USER_MONEY_Y = 720;
+    private static final int USER_X = 750;
+    private static final int MONEY_X = 390;
+
     public GameView(Game backend){
         this.backend = backend;
         // Initializing the images
@@ -97,6 +103,17 @@ public class GameView extends JFrame{
         g.drawString("Place a bet to get started!", 25, 760);
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
     }
+    public void drawWhoWon(int whoWon, Graphics g) {
+        if (whoWon == backend.PLAYER_WON) {
+            g.drawString("The Player won with a hand of " + );
+        }
+        else if (whoWon == backend.COMPUTER_WON) {
+
+        }
+        else{
+
+        }
+    }
     // Function that paints onto screen
     public void paint (Graphics g){
         super.paint(g);
@@ -107,16 +124,16 @@ public class GameView extends JFrame{
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
         g.setColor(Color.RED);
         // Draws ovals displaying user scores
-        g.fillOval(350, 660, OVALWIDTH, OVALHEIGHT);
+        g.fillOval(USER_OVAL, 660, OVALWIDTH, OVALHEIGHT);
         g.drawImage(chips, 600, 50, 100, 100, this);
-        g.fillOval(350, 50, OVALWIDTH, OVALHEIGHT);
+        g.fillOval(USER_OVAL, 50, OVALWIDTH, OVALHEIGHT);
         g.setColor(Color.BLACK);
         drawInstructions(g);
         // Draws money for cpu and user
-        g.drawString("$" + backend.getMoney(), 390,720);
-        g.drawString("$" + backend.getCpuMoney(), 390, 115);
-        g.drawString("CPU", 750, 125);
-        g.drawString("User", 750, 720);
+        g.drawString("$" + backend.getMoney(), MONEY_X,USER_MONEY_Y);
+        g.drawString("$" + backend.getCpuMoney(), MONEY_X, 115);
+        g.drawString("CPU", USER_X, 125);
+        g.drawString("User", USER_X, USER_MONEY_Y);
         // Draws the cards after user bets
         drawPlayerCards(g);
         drawCpuCards(g);

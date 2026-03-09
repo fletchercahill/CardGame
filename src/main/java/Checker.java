@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Checker {
     // Takes in both the hand that is being checked,
     // and the table hand
-    public static int check(ArrayList<Card> hand, ArrayList<Card> table){
+    public static String check(ArrayList<Card> hand, ArrayList<Card> table){
         // Because in Texas Holdem your hand and the communal hand are shared to form hands
         ArrayList<Card> total = new ArrayList<Card>();
         total.addAll(hand);
@@ -11,13 +11,14 @@ public class Checker {
 
         // Checks from most valuable to least valuable hand
         if (hasRoyalFlush(total)){
-            return 10;
+            return "RoyalFlush";
+
         }
         if (hasStraightFlush(total)){
-            return 9; 
+            return "StraightFlush";
         }
         if (hasFourOfAKind(total)){
-            return 8;
+            return "FourOfKind";
         }
         if (hasFullHouse(total)){
             return 7;
