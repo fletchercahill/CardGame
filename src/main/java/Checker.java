@@ -30,7 +30,7 @@ public class Checker {
             return "Straight";
         }
         if (hasThreeOfAKind(total)){
-            return "Three";
+            return "ThreeOfKind";
         }
         if (hasTwoPair(total)){
             return "TwoPair";

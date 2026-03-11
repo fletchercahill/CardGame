@@ -124,10 +124,10 @@ public class Game {
         if (hand.equals("Straight")) {
             return 5;
         }
-        if (hand.equals("Three")) {
+        if (hand.equals("ThreeOfKind")) {
             return 4;
         }
-        if (hand.equals("Two Pair")){
+        if (hand.equals("TwoPair")){
             return 3;
         }
         if (hand.equals("Pair")){
