@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class Game {
     private Scanner scan;
     private int winner;
     private ArrayList<Card> table;
+    private HashMap<String, Integer> hashMap = new HashMap<>();
     private GameView window;
     private String winHandName = "";
     private boolean showResult = false;
@@ -36,6 +38,17 @@ public class Game {
         scan = new Scanner(System.in);
         deck.shuffle();
         this.window = new GameView(this);
+        // Sort of like a dictionary: given a certain string returns certain value
+        hashMap.put("RoyalFlush", 10);
+        hashMap.put("StraightFlush", 9);
+        hashMap.put("FourOfKind", 8);
+        hashMap.put("Full", 7);
+        hashMap.put("Flush", 6);
+        hashMap.put("Straight", 5);
+        hashMap.put("ThreeOfKind", 4);
+        hashMap.put("TwoPair", 3);
+        hashMap.put("Pair", 2);
+        hashMap.put("Nada", 1);
     }
     public void dealHands(){
         // Deals two cards to the player and the cpu
@@ -105,34 +118,7 @@ public class Game {
     }
     // Returns the numeric value of the scores
     private int getScoreValue(String hand) {
-        if (hand.equals("RoyalFlush")) {
-            return 10;
-        }
-        if (hand.equals("StraightFlush")){
-            return 9;
-        }
-        if (hand.equals("FourOfKind")){
-            return 8;
-        }
-        if (hand.equals("Full")){
-            return 7;
-        }
-        if (hand.equals("Flush")) {
-            return 6;
-        }
-        if (hand.equals("Straight")) {
-            return 5;
-        }
-        if (hand.equals("ThreeOfKind")) {
-            return 4;
-        }
-        if (hand.equals("TwoPair")){
-            return 3;
-        }
-        if (hand.equals("Pair")){
-            return 2;
-        }
-        return 1;
+        return hashMap.get(hand);
     }
     public int getWinner(){
         return winner;
