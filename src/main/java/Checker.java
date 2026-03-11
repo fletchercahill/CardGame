@@ -3,43 +3,44 @@ import java.util.ArrayList;
 public class Checker {
     // Takes in both the hand that is being checked,
     // and the table hand
-    public static int check(ArrayList<Card> hand, ArrayList<Card> table){
+    public static String check(ArrayList<Card> hand, ArrayList<Card> table){
         // Because in Texas Holdem your hand and the communal hand are shared to form hands
         ArrayList<Card> total = new ArrayList<Card>();
         total.addAll(hand);
         total.addAll(table);
+        ArrayList<Card> winners = new ArrayList<>();
 
         // Checks from most valuable to least valuable hand
         if (hasRoyalFlush(total)){
-            return 10;
+            return "RoyalFlush";
         }
-        if (hasStraightFlush(total)){
-            return 9; 
+        else if (hasStraightFlush(total)){
+            return "StraightFlush";
         }
-        if (hasFourOfAKind(total)){
-            return 8;
+        else if (hasFourOfAKind(total)){
+            return "FourOfKind";
         }
-        if (hasFullHouse(total)){
-            return 7;
+        else if (hasFullHouse(total)){
+            return "Full";
         }
-        if (hasFlush(total)){
-            return 6;
+        else if (hasFlush(total)){
+            return "Flush";
         }
-        if (hasStraight(total)){
-            return 5;
+        else if (hasStraight(total)){
+            return "Straight";
         }
-        if (hasThreeOfAKind(total)){
-            return 4;
+        else if (hasThreeOfAKind(total)){
+            return "ThreeOfKind";
         }
-        if (hasTwoPair(total)){
-            return 3;
+        else if (hasTwoPair(total)){
+            return "TwoPair";
         }
-        if (hasPair(total)){
-            return 2;
+        else if (hasPair(total)){
+            return "Pair";
         }
         // If High Card returns 1
         // If both player and cpu only have high card, there's a function in game to compare
-        return 1;
+        return "Nada";
 
 
 

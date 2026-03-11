@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,7 +13,16 @@ public class Game {
     private Scanner scan;
     private int winner;
     private ArrayList<Card> table;
+    private HashMap<String, Integer> hashMap = new HashMap<>();
     private GameView window;
+    private String winHandName = "";
+    private boolean showResult = false;
+
+    // Constants
+    public static final int  PLAYER_WON = 1;
+    public static final int COMPUTER_WON = 2;
+    public static final int TIE = 3;
+
     // Instance variables
     public Game(){
         final String[] ranks = {"2", "3", "4", "5", "6", "7", "8",
@@ -28,6 +38,17 @@ public class Game {
         scan = new Scanner(System.in);
         deck.shuffle();
         this.window = new GameView(this);
+        // Sort of like a dictionary: given a certain string returns certain value
+        hashMap.put("RoyalFlush", 10);
+        hashMap.put("StraightFlush", 9);
+        hashMap.put("FourOfKind", 8);
+        hashMap.put("Full", 7);
+        hashMap.put("Flush", 6);
+        hashMap.put("Straight", 5);
+        hashMap.put("ThreeOfKind", 4);
+        hashMap.put("TwoPair", 3);
+        hashMap.put("Pair", 2);
+        hashMap.put("Nada", 1);
     }
     public void dealHands(){
         // Deals two cards to the player and the cpu
@@ -40,8 +61,14 @@ public class Game {
 
     public void playGame(){
         printInstructions();
+
         while (money > 0){
+            // Hides the result for now
+            showResult = false;
             winner = 0;
+
+
+
             System.out.println("You have $" + money);
             System.out.println("House has $" + cpuMoney);
             // First deals with game logic then repaints the window
@@ -50,55 +77,33 @@ public class Game {
             deck.shuffle();
             dealHands();
             dealTable();
-            window.repaint();
-            // Prints out game results to the console
-            System.out.print("Your hand: " + p1.getHand().getFirst().getRank() + " " + p1.getHand().getFirst().getSuit());
-            System.out.println(" " + p1.getHand().getLast().getRank() + " " + p1.getHand().getLast().getSuit());
-            System.out.print("Table: " + table.getFirst().getRank() + " " + table.getFirst().getSuit());
-            System.out.print(" " + table.get(1).getRank() + " " + table.get(1).getSuit());
-            System.out.print(" " + table.get(2).getRank() + " " + table.get(2).getSuit());
-            System.out.print(" " + table.get(3).getRank() + " " + table.get(3).getSuit());
-            System.out.println(" " + table.get(4).getRank() + " " + table.get(4).getSuit());
-            int playerPoints = Checker.check(p1.getHand(), table);
-            int cpuPoints = Checker.check(cpu.getHand(), table);
-            // Both have only high card, call high card function
-            if (playerPoints == 1 && cpuPoints == 1){
-                boolean winner = compareHighCards();
-                // Player wins
-                if (winner) cpuPoints = 0;
-                // Cpu wins
-                else playerPoints = 0;
+
+            // Gets the description of each hand, what they have
+            String playerHand = Checker.check(p1.getHand(), table);
+            String cpuHand = Checker.check(cpu.getHand(), table);
+
+            // Gets point total for each player
+            int pPoints = getScoreValue(playerHand);
+            int cPoints = getScoreValue(cpuHand);
+
+            // Checks to see who won and then updates hands
+            if (pPoints > cPoints) {
+                winner = PLAYER_WON;
+                winHandName = playerHand;
+                money+= bet;
+                cpuMoney -= bet;
             }
-            // More user friendly way of printing out the hands
-            System.out.print("Cpu hand: " + cpu.getHand().getFirst().getRank() + " " + cpu.getHand().getFirst().getSuit());
-            System.out.println(" " + cpu.getHand().getLast().getRank() + " " + cpu.getHand().getLast().getSuit());
-            System.out.println("Your score: " + playerPoints);
-            System.out.println("Cpu score: " + cpuPoints);
-            // If player has better hand than Cpu they win
-            if (playerPoints > cpuPoints){
-                winner+=1;
-                System.out.println("You win the hand!");
-                money+=bet;
-                cpuMoney-=bet;
-            }
-            // If cpu has better hand than player then they win
-            else if (cpuPoints > playerPoints){
-                winner+=2;
-                System.out.println("Cpu wins the hand!");
-                money-=bet;
-                cpuMoney+=bet;
+            else if (cPoints > pPoints) {
+                winner = COMPUTER_WON;
+                winHandName = cpuHand;
+                money-= bet;
+                cpuMoney += bet;
             }
             else{
-                winner+=3;
-                System.out.println("You tied!");
+                winner = TIE;
             }
-            if (money <= 0){
-                System.out.println("You are out of money, goodbye!");
-                return;
-            }
-            if (cpuMoney <= 0){
-                System.out.println("House is out of money, you win!");
-            }
+            showResult = true;
+            window.repaint();
             System.out.println("Play again? (y/n)");
             String choice = scan.nextLine();
             // Only keep playing if they want to
@@ -110,6 +115,10 @@ public class Game {
 
         }
 
+    }
+    // Returns the numeric value of the scores
+    private int getScoreValue(String hand) {
+        return hashMap.get(hand);
     }
     public int getWinner(){
         return winner;
@@ -128,6 +137,13 @@ public class Game {
     }
     public int getCpuMoney(){
         return this.cpuMoney;
+    }
+    public String getWinHandName() {
+        return winHandName;
+    }
+
+    public boolean isShowResult() {
+        return showResult;
     }
     // Clears the hands and table
     private void resetTable(){

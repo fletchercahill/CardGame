@@ -13,6 +13,12 @@ public class GameView extends JFrame{
     private final Image chips;
     private final Image cardBack;
     private Game backend;
+    // Constants
+    private static final int USER_OVAL = 350;
+    private static final int USER_MONEY_Y = 720;
+    private static final int USER_X = 750;
+    private static final int MONEY_X = 390;
+
     public GameView(Game backend){
         this.backend = backend;
         // Initializing the images
@@ -97,6 +103,7 @@ public class GameView extends JFrame{
         g.drawString("Place a bet to get started!", 25, 760);
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
     }
+
     // Function that paints onto screen
     public void paint (Graphics g){
         super.paint(g);
@@ -107,21 +114,61 @@ public class GameView extends JFrame{
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
         g.setColor(Color.RED);
         // Draws ovals displaying user scores
-        g.fillOval(350, 660, OVALWIDTH, OVALHEIGHT);
+        g.fillOval(USER_OVAL, 660, OVALWIDTH, OVALHEIGHT);
         g.drawImage(chips, 600, 50, 100, 100, this);
-        g.fillOval(350, 50, OVALWIDTH, OVALHEIGHT);
+        g.fillOval(USER_OVAL, 50, OVALWIDTH, OVALHEIGHT);
         g.setColor(Color.BLACK);
         drawInstructions(g);
         // Draws money for cpu and user
-        g.drawString("$" + backend.getMoney(), 390,720);
-        g.drawString("$" + backend.getCpuMoney(), 390, 115);
-        g.drawString("CPU", 750, 125);
-        g.drawString("User", 750, 720);
+        g.drawString("$" + backend.getMoney(), MONEY_X,USER_MONEY_Y);
+        g.drawString("$" + backend.getCpuMoney(), MONEY_X, 115);
+        g.drawString("CPU", USER_X, 125);
+        g.drawString("User", USER_X, USER_MONEY_Y);
         // Draws the cards after user bets
         drawPlayerCards(g);
         drawCpuCards(g);
         drawTableCards(g);
         handleWin(g);
+        if (backend.isShowResult()) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(new Color(255, 215, 0));
+            g2.setStroke(new BasicStroke(6));
+
+            int winY;
+            String winnerName;
+            if (backend.getWinner() == 1) {
+                // If the Player won, use the player's Y-coordinate
+                winY = 515;
+                winnerName = "Player";
+            } else {
+                // If the CPU won, use the CPU's Y-coordinate
+                winY = 200;
+                winnerName = "CPU";
+            }
+
+            if (backend.getWinner() == backend.PLAYER_WON) {
+                // Draw box around PLAYER cards only
+                g2.drawRect(370 - 5, winY - 5, 230, 110);
+
+                // Draw player message
+                g2.setFont(new Font("Georgia", Font.BOLD, 20));
+                g2.drawString("You won with " + backend.getWinHandName(), 620, 565);
+
+            } else if (backend.getWinner() == backend.COMPUTER_WON) {
+                // Draw box around CPU cards only
+                g2.drawRect(370 - 5, winY - 5, 230, 110);
+
+                // Draw CPU message
+                g2.setFont(new Font("Georgia", Font.BOLD, 20));
+                g2.drawString("CPU won with " + backend.getWinHandName(), 620, 250);
+            }
+            else {
+                g2.drawRect(370 - 5, 515 - 5, 230, 110);
+                g2.drawRect(370 - 5, 200 - 5, 230, 110);
+                g2.drawString("It's a tie: " + backend.getWinHandName(), 620, 415);
+            }
+
+        }
         // Checks if needs to handle end game
         if (backend.getCpuMoney() <= 0 || backend.getMoney() <= 0){
             endGame(g);
