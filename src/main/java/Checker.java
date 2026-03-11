@@ -14,28 +14,28 @@ public class Checker {
         if (hasRoyalFlush(total)){
             return "RoyalFlush";
         }
-        if (hasStraightFlush(total)){
+        else if (hasStraightFlush(total)){
             return "StraightFlush";
         }
-        if (hasFourOfAKind(total)){
+        else if (hasFourOfAKind(total)){
             return "FourOfKind";
         }
-        if (hasFullHouse(total)){
+        else if (hasFullHouse(total)){
             return "Full";
         }
-        if (hasFlush(total)){
+        else if (hasFlush(total)){
             return "Flush";
         }
-        if (hasStraight(total)){
+        else if (hasStraight(total)){
             return "Straight";
         }
-        if (hasThreeOfAKind(total)){
+        else if (hasThreeOfAKind(total)){
             return "ThreeOfKind";
         }
-        if (hasTwoPair(total)){
+        else if (hasTwoPair(total)){
             return "TwoPair";
         }
-        if (hasPair(total)){
+        else if (hasPair(total)){
             return "Pair";
         }
         // If High Card returns 1
