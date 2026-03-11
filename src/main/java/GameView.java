@@ -103,17 +103,7 @@ public class GameView extends JFrame{
         g.drawString("Place a bet to get started!", 25, 760);
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
     }
-    public void drawWhoWon(int whoWon, Graphics g) {
-        if (whoWon == backend.PLAYER_WON) {
-            g.drawString("The Player won with a hand of " + );
-        }
-        else if (whoWon == backend.COMPUTER_WON) {
 
-        }
-        else{
-
-        }
-    }
     // Function that paints onto screen
     public void paint (Graphics g){
         super.paint(g);
@@ -139,6 +129,46 @@ public class GameView extends JFrame{
         drawCpuCards(g);
         drawTableCards(g);
         handleWin(g);
+        if (backend.isShowResult()) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(new Color(255, 215, 0));
+            g2.setStroke(new BasicStroke(6));
+
+            int winY;
+            String winnerName;
+            if (backend.getWinner() == 1) {
+                // If the Player won, use the player's Y-coordinate
+                winY = 515;
+                winnerName = "Player";
+            } else {
+                // If the CPU won, use the CPU's Y-coordinate
+                winY = 200;
+                winnerName = "CPU";
+            }
+
+            if (backend.getWinner() == backend.PLAYER_WON) {
+                // Draw box around PLAYER cards only
+                g2.drawRect(370 - 5, winY - 5, 230, 110);
+
+                // Draw player message
+                g2.setFont(new Font("Georgia", Font.BOLD, 20));
+                g2.drawString("You won with " + backend.getWinHandName(), 620, 565);
+
+            } else if (backend.getWinner() == backend.COMPUTER_WON) {
+                // Draw box around CPU cards only
+                g2.drawRect(370 - 5, winY - 5, 230, 110);
+
+                // Draw CPU message
+                g2.setFont(new Font("Georgia", Font.BOLD, 20));
+                g2.drawString("CPU won with " + backend.getWinHandName(), 620, 250);
+            }
+            else {
+                g2.drawRect(370 - 5, 515 - 5, 230, 110);
+                g2.drawRect(370 - 5, 200 - 5, 230, 110);
+                g2.drawString("It's a tie: " + backend.getWinHandName(), 620, 415);
+            }
+
+        }
         // Checks if needs to handle end game
         if (backend.getCpuMoney() <= 0 || backend.getMoney() <= 0){
             endGame(g);

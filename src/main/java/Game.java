@@ -13,6 +13,9 @@ public class Game {
     private int winner;
     private ArrayList<Card> table;
     private GameView window;
+    private String winHandName = "";
+    private String tieMessage = "";
+    private boolean showResult = false;
 
     // Constants
     public static final int  PLAYER_WON = 1;
@@ -46,8 +49,14 @@ public class Game {
 
     public void playGame(){
         printInstructions();
+
         while (money > 0){
+            // Hides the result for now
+            showResult = false;
             winner = 0;
+            tieMessage = "";
+
+
             System.out.println("You have $" + money);
             System.out.println("House has $" + cpuMoney);
             // First deals with game logic then repaints the window
@@ -56,58 +65,33 @@ public class Game {
             deck.shuffle();
             dealHands();
             dealTable();
-            window.repaint();
-            // Prints out game results to the console
-            System.out.print("Your hand: " + p1.getHand().getFirst().getRank() + " " + p1.getHand().getFirst().getSuit());
-            System.out.println(" " + p1.getHand().getLast().getRank() + " " + p1.getHand().getLast().getSuit());
-            System.out.print("Table: " + table.getFirst().getRank() + " " + table.getFirst().getSuit());
-            System.out.print(" " + table.get(1).getRank() + " " + table.get(1).getSuit());
-            System.out.print(" " + table.get(2).getRank() + " " + table.get(2).getSuit());
-            System.out.print(" " + table.get(3).getRank() + " " + table.get(3).getSuit());
-            System.out.println(" " + table.get(4).getRank() + " " + table.get(4).getSuit());
-            int playerPoints = Checker.check(p1.getHand(), table);
-            int cpuPoints = Checker.check(cpu.getHand(), table);
-            // Both have only high card, call high card function
-            if (playerPoints == 1 && cpuPoints == 1){
-                boolean winner = compareHighCards();
-                // Player wins
-                if (winner) cpuPoints = 0;
-                // Cpu wins
-                else playerPoints = 0;
-            }
-            // More user friendly way of printing out the hands
-            System.out.print("Cpu hand: " + cpu.getHand().getFirst().getRank() + " " + cpu.getHand().getFirst().getSuit());
-            System.out.println(" " + cpu.getHand().getLast().getRank() + " " + cpu.getHand().getLast().getSuit());
-            System.out.println("Your score: " + playerPoints);
-            System.out.println("Cpu score: " + cpuPoints);
-            // If player has better hand than Cpu they win
 
-            window.drawWhoWon(winner, window.getGraphics());
+            // Gets the description of each hand, what they have
+            String playerHand = Checker.check(p1.getHand(), table);
+            String cpuHand = Checker.check(cpu.getHand(), table);
 
-            if (playerPoints > cpuPoints){
+            // Gets point total for each player
+            int pPoints = getScoreValue(playerHand);
+            int cPoints = getScoreValue(cpuHand);
+
+            // Checks to see who won and then updates hands
+            if (pPoints > cPoints) {
                 winner = PLAYER_WON;
-                System.out.println("You win the hand!");
-                money+=bet;
-                cpuMoney-=bet;
+                winHandName = playerHand;
+                money+= bet;
+                cpuMoney -= bet;
             }
-            // If cpu has better hand than player then they win
-            else if (cpuPoints > playerPoints){
+            else if (cPoints > pPoints) {
                 winner = COMPUTER_WON;
-                System.out.println("Cpu wins the hand!");
-                money-=bet;
-                cpuMoney+=bet;
+                winHandName = cpuHand;
+                money-= bet;
+                cpuMoney += bet;
             }
             else{
                 winner = TIE;
-                System.out.println("You tied!");
             }
-            if (money <= 0){
-                System.out.println("You are out of money, goodbye!");
-                return;
-            }
-            if (cpuMoney <= 0){
-                System.out.println("House is out of money, you win!");
-            }
+            showResult = true;
+            window.repaint();
             System.out.println("Play again? (y/n)");
             String choice = scan.nextLine();
             // Only keep playing if they want to
@@ -119,6 +103,37 @@ public class Game {
 
         }
 
+    }
+    // Returns the numeric value of the scores
+    private int getScoreValue(String hand) {
+        if (hand.equals("RoyalFlush")) {
+            return 10;
+        }
+        if (hand.equals("StraightFlush")){
+            return 9;
+        }
+        if (hand.equals("FourOfKind")){
+            return 8;
+        }
+        if (hand.equals("Full")){
+            return 7;
+        }
+        if (hand.equals("Flush")) {
+            return 6;
+        }
+        if (hand.equals("Straight")) {
+            return 5;
+        }
+        if (hand.equals("Three")) {
+            return 4;
+        }
+        if (hand.equals("Two Pair")){
+            return 3;
+        }
+        if (hand.equals("Pair")){
+            return 2;
+        }
+        return 1;
     }
     public int getWinner(){
         return winner;
@@ -137,6 +152,15 @@ public class Game {
     }
     public int getCpuMoney(){
         return this.cpuMoney;
+    }
+    public String getWinHandName() {
+        return winHandName;
+    }
+    public String getTieMessage() {
+        return  tieMessage;
+    }
+    public boolean isShowResult() {
+        return showResult;
     }
     // Clears the hands and table
     private void resetTable(){

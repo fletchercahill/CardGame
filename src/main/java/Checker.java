@@ -8,11 +8,11 @@ public class Checker {
         ArrayList<Card> total = new ArrayList<Card>();
         total.addAll(hand);
         total.addAll(table);
+        ArrayList<Card> winners = new ArrayList<>();
 
         // Checks from most valuable to least valuable hand
         if (hasRoyalFlush(total)){
             return "RoyalFlush";
-
         }
         if (hasStraightFlush(total)){
             return "StraightFlush";
@@ -21,26 +21,26 @@ public class Checker {
             return "FourOfKind";
         }
         if (hasFullHouse(total)){
-            return 7;
+            return "Full";
         }
         if (hasFlush(total)){
-            return 6;
+            return "Flush";
         }
         if (hasStraight(total)){
-            return 5;
+            return "Straight";
         }
         if (hasThreeOfAKind(total)){
-            return 4;
+            return "Three";
         }
         if (hasTwoPair(total)){
-            return 3;
+            return "TwoPair";
         }
         if (hasPair(total)){
-            return 2;
+            return "Pair";
         }
         // If High Card returns 1
         // If both player and cpu only have high card, there's a function in game to compare
-        return 1;
+        return "Nada";
 
 
 
