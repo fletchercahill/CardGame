@@ -14,7 +14,6 @@ public class Game {
     private ArrayList<Card> table;
     private GameView window;
     private String winHandName = "";
-    private String tieMessage = "";
     private boolean showResult = false;
 
     // Constants
@@ -54,7 +53,7 @@ public class Game {
             // Hides the result for now
             showResult = false;
             winner = 0;
-            tieMessage = "";
+
 
 
             System.out.println("You have $" + money);
@@ -156,9 +155,7 @@ public class Game {
     public String getWinHandName() {
         return winHandName;
     }
-    public String getTieMessage() {
-        return  tieMessage;
-    }
+
     public boolean isShowResult() {
         return showResult;
     }
