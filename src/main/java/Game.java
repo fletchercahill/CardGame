@@ -194,6 +194,7 @@ public class Game {
         return bet;
     }
     public void reset(){
+        // Resets instance variables and repainsd the board
         this.money = 100;
         this.cpuMoney = 300;
         resetTable();
