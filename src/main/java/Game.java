@@ -101,14 +101,10 @@ public class Game {
             }
             showResult = true;
             window.repaint();
-            System.out.println("Play again? (y/n/r)");
+            System.out.println("Play again? (y/n");
             String choice = scan.nextLine();
             // Only keep playing if they want to
-            if (choice.equals("r")){
-                reset();
-                System.out.println("Resetting game...");
-            }
-            else if (!choice.equals("y")){
+            if (!choice.equals("y")){
                 System.out.println("Thanks for playing!");
                 break;
             }
@@ -193,13 +189,7 @@ public class Game {
         }
         return bet;
     }
-    public void reset(){
-        this.money = 100;
-        this.cpuMoney = 300;
-        resetTable();
-        deck.shuffle();
-        window.repaint();
-    }
+
 
     public static void main(String[] args) {
         Game G1 = new Game();
