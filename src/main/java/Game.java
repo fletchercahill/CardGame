@@ -66,9 +66,6 @@ public class Game {
             // Hides the result for now
             showResult = false;
             winner = 0;
-
-
-
             System.out.println("You have $" + money);
             System.out.println("House has $" + cpuMoney);
             // First deals with game logic then repaints the window
@@ -104,10 +101,14 @@ public class Game {
             }
             showResult = true;
             window.repaint();
-            System.out.println("Play again? (y/n)");
+            System.out.println("Play again? (y/n/r)");
             String choice = scan.nextLine();
             // Only keep playing if they want to
-            if (!choice.equals("y")){
+            if (choice.equals("r")){
+                reset();
+                System.out.println("Resetting game...");
+            }
+            else if (!choice.equals("y")){
                 System.out.println("Thanks for playing!");
                 break;
             }
@@ -191,6 +192,13 @@ public class Game {
             scan.nextLine();
         }
         return bet;
+    }
+    public void reset(){
+        this.money = 100;
+        this.cpuMoney = 300;
+        resetTable();
+        deck.shuffle();
+        window.repaint();
     }
 
     public static void main(String[] args) {

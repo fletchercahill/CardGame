@@ -165,7 +165,6 @@ public class GameView extends JFrame{
             else {
                 g2.drawRect(370 - 5, 515 - 5, 230, 110);
                 g2.drawRect(370 - 5, 200 - 5, 230, 110);
-                g2.drawString("It's a tie: " + backend.getWinHandName(), 620, 415);
             }
 
         }
