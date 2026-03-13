@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GameView extends JFrame{
     private final int WINDOW_WIDTH = 1000;
@@ -20,12 +22,26 @@ public class GameView extends JFrame{
     private static final int MONEY_X = 390;
 
     public GameView(Game backend){
-        this.backend = backend;
-        // Initializing the images
-        cardBack = new ImageIcon("src/main/resources/cardback.png").getImage();
-        bgImage = new ImageIcon("src/main/resources/board.png").getImage();
-        chips = new ImageIcon("src/main/resources/chips3.png").getImage();
-        // Creating and setting window operations
+            this.backend = backend;
+            // Initializing the images
+            cardBack = new ImageIcon("src/main/resources/cardback.png").getImage();
+            bgImage = new ImageIcon("src/main/resources/board.png").getImage();
+            chips = new ImageIcon("src/main/resources/chips3.png").getImage();
+
+            // NEW: Add a MouseListener to act as our Restart Button
+            this.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int mx = e.getX();
+                    int my = e.getY();
+                    // Check if the click coordinates fall within our drawn button (x:800-950, y:30-70)
+                    if (mx >= 800 && mx <= 950 && my >= 30 && my <= 70) {
+                        backend.restartGame();
+                    }
+                }
+            });
+
+            // Creating and setting window operations
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Poker Reimagined");
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -166,6 +182,16 @@ public class GameView extends JFrame{
                 g2.drawRect(370 - 5, 515 - 5, 230, 110);
                 g2.drawRect(370 - 5, 200 - 5, 230, 110);
             }
+            if (backend.getCpuMoney() <= 0 || backend.getMoney() <= 0){
+                endGame(g);
+            }
+
+            // NEW: Draw the Restart Button on top of everything
+            g.setColor(new Color(50, 50, 50)); // Dark Grey background
+            g.fillRect(800, 30, 150, 40);
+            g.setColor(Color.WHITE); // White text
+            g.setFont(new Font("SansSerif", Font.BOLD, 18));
+            g.drawString("Restart Game", 815, 57);
 
         }
         // Checks if needs to handle end game
