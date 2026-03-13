@@ -62,13 +62,20 @@ public class Game {
     public void playGame(){
         printInstructions();
 
-        while (money > 0){
-            // Hides the result for now
+        while (true){
+            // NEW: If someone is bankrupt, wait for the GUI restart button to reset the money
+            if (money <= 0 || cpuMoney <= 0) {
+                System.out.println("Game Over! Click 'Restart Game' in the window to play again.");
+                while (money <= 0 || cpuMoney <= 0) {
+                    try { Thread.sleep(250); } catch (InterruptedException e) {}
+                }
+            }
             showResult = false;
             winner = 0;
             System.out.println("You have $" + money);
             System.out.println("House has $" + cpuMoney);
-            // First deals with game logic then repaints the window
+
+            // ... (Keep the rest of your existing playGame() code from here down)
             int bet = promptBet();
             resetTable();
             deck.shuffle();
@@ -101,7 +108,7 @@ public class Game {
             }
             showResult = true;
             window.repaint();
-            System.out.println("Play again? (y/n");
+            System.out.println("Play again? (y/n)");
             String choice = scan.nextLine();
             // Only keep playing if they want to
             if (!choice.equals("y")){
@@ -188,6 +195,26 @@ public class Game {
             scan.nextLine();
         }
         return bet;
+    }
+    // Resets the game to its initial state
+    public void restartGame() {
+        this.money = 100;
+        this.cpuMoney = 300;
+        this.showResult = false;
+        this.winner = 0;
+        this.winHandName = "";
+        resetTable();
+
+        // Create a fresh, shuffled deck
+        final String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+        final String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
+        final int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+        this.deck = new Deck(ranks, suits, values);
+        this.deck.shuffle();
+
+        window.repaint();
+        System.out.println("\n*** Game Restarted! ***");
+        System.out.println("Play again (y/n)");
     }
 
 
